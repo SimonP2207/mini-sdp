@@ -1,0 +1,16 @@
+.venv/
+.git/
+.github/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+data/
+archive/
+*.db
+*.db-wal
+*.db-shm
+docs/
+.claude/
+/.vscode/
