@@ -1,4 +1,5 @@
 import logging
+import os
 import subprocess
 
 from ..data.models import ProcessedDataset, ProcessingBlock, RawDataset
@@ -32,7 +33,9 @@ class DataProcessor:
             dataset_prefix = raw_dataset.path.stem
 
         clargs = [
-            "docker", "run", "--rm", "-v",
+            "docker", "run", "--rm",
+            "--user", f"{os.getuid()}:{os.getgid()}",
+            "-v",
             f"{raw_data_dir}:/raw_data",
             "--name", container_name,
             "-v",

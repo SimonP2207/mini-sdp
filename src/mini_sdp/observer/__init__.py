@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from ..data.models import ObservingBlock, RawDataset
@@ -21,6 +22,7 @@ class DataObserver:
         result = subprocess.run(
             [
                 "docker", "run", "--rm",
+                "--user", f"{os.getuid()}:{os.getgid()}",
                 "--name", container_name,
                 "-v",
                 f"{local_data_dir}:/data",

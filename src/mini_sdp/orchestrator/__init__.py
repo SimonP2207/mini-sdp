@@ -110,7 +110,7 @@ class DataOrchestrator:
             await self._drain_processing()
 
     def stop(self) -> None:
-        logger.warning("STOPPING!!!!!")
+        logger.warning("Stopping DataOrchestrator gracefully")
         self._stopping.set()
 
     # ######################### RECOVERY E.G. AFTER CRASH  ################### #
