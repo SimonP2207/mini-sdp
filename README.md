@@ -11,7 +11,8 @@ if freed.
 
 Three processes share one SQLite database (the State Store): the orchestrator
 (control loop), the observation generator (queues observations), and the QA web app.
-See docs/images/components.svg for the component architecture.
+The component architecture is illustrated below as a C4-component diagram:
+![Mini-SDP component architecture](docs/images/components.svg)
 
 # Setup
 Requirements:
