@@ -1,0 +1,43 @@
+@startuml
+!include /data/lib/C4/C4_Container.puml
+!include /data/lib/C4/C4_Component.puml
+
+SystemDb_Ext(productArchive, "Product Archive", "Archive for science-ready data products")
+System_Ext(skaTelescope, "SKA", "Square Kilometre Array telescope")
+
+System_Boundary(miniSdp, "(Mini-)Science Data Processor") {
+	Container_Boundary(dataController, "Data Controller") {
+		ComponentDb(stateStore, "State Store", "SQLite", "Observations, processing runs, allocations")
+		Component(storageManager, "Storage Manager", "Python", "Admits allocations against threshold and disk margin; creates observation directories; deletes released visibilities")
+		Component(dataObserver, "Data Observer", "bash script", "Conducts observations")
+		Component(dataArchiver, "Data Archiver", "Python", "Archives QA-approved data products")
+		Component(dataProcessor, "Data Processor", "bash script", "Processes raw visibilities")
+		Component(dataOrchestrator, "Data Orchestrator", "Python", "Runs the observing loop; dispatches processing runs (bounded pool); applies QA outcomes; triggers archive and release")
+	}
+	Container_Boundary(dataStorage, "Data Storage") {
+		ComponentDb(rawDataStorage, "Raw Data", "File System", "Raw visibilities")
+		ComponentDb(processedDataStorage, "Processed Data", "File System", "Processed data products")
+	}
+	Container(qA, "Quality Assessment", "Web App", "Single-page app for quality assessment of processed data products")
+}
+
+Rel(dataObserver, rawDataStorage, "Writes raw visibilities to", "scp")
+Rel_L(dataObserver, skaTelescope, "Sends observing request to", "https")
+Rel(dataProcessor, rawDataStorage, "Reads raw visibilities from", "")
+Rel(dataProcessor, processedDataStorage, "Writes processed data to", "")
+Rel(storageManager, dataStorage, "Reads/frees space usage from", "")
+
+Rel(dataOrchestrator, storageManager, "Requests allocation from, sends deletion request to", "")
+Rel(dataOrchestrator, dataObserver, "Sends observation block to", "")
+Rel(dataOrchestrator, dataProcessor, "Sends processing block to", "")
+Rel(dataOrchestrator, dataArchiver, "Sends archive request to", "")
+Rel_U(dataOrchestrator, qA, "Requests assessment from", "")
+
+Rel_L(dataOrchestrator, stateStore, "Reads/writes pipeline state", "")
+Rel(dataArchiver, processedDataStorage, "Reads data products from", "")
+Rel(dataArchiver, productArchive, "Writes to", "scp")
+
+Lay_R(dataObserver, storageManager)
+
+SHOW_LEGEND()
+@enduml
