@@ -12,10 +12,12 @@ dependencies = [
     "fastapi>=0.141.1",
     "matplotlib>=3.11.2",
     "pydantic>=2.13.5",
+    "uvicorn[standard]>=0.53.0",
 ]
 
 [project.scripts]
 mini-sdp = "mini_sdp:main"
+mini-sdp-qa = "mini_sdp.qa:main"
 mini-sdp-generate = "mini_sdp.generator:main"
 
 [build-system]
