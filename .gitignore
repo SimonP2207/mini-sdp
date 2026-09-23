@@ -10,7 +10,6 @@ wheels/
 .venv
 /data/
 /runs/
-/.vscode/
 /.claude/
 /.pytest_cache/
 /.ruff_cache/

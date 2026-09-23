@@ -1,0 +1,58 @@
+{
+  // Runs the three components natively (not in Docker) so breakpoints work in all of
+  // them at once. They share one SQLite file (${workspaceFolder}/sdp.db) and one data
+  // directory, exactly like the compose deployment. Use the "Mini-SDP: all three"
+  // compound to launch and debug all three together.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Orchestrator",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "mini_sdp",
+      "args": [
+        "--db=${workspaceFolder}/runs/state/sdp.db",
+        "--data-dir=${workspaceFolder}/runs/data",
+        "--threshold=3221225472",
+        "--disk-margin=1073741824",
+        "--max-parallel=2"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+    {
+      "name": "Generator",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "mini_sdp.generator",
+      "args": [
+        "--db=${workspaceFolder}/runs/state/sdp.db",
+        "--interval=5"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "QA web app",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "mini_sdp.qa",
+      "args": [
+        "--db=${workspaceFolder}/runs/state/sdp.db",
+        "--data-dir=${workspaceFolder}/runs/data",
+        "--host=127.0.0.1",
+        "--port=8000"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Mini-SDP: all three",
+      "configurations": ["Orchestrator", "Generator", "QA web app"],
+      "stopAll": true
+    }
+  ]
+}
