@@ -8,7 +8,7 @@ import threading
 import time
 from pathlib import Path
 
-from ..data.models import ObservingBlock, ProcessedDataset, RawDataset
+from ..data.models import ObservingBlock, ProcessedDataset, ProcessingBlock, RawDataset
 
 # Small sizes so tests stay fast; the control logic is size-agnostic.
 FAKE_RAW_SIZE = 1000
@@ -47,6 +47,7 @@ class FakeProcessor:
 
     def process(
         self,
+        processing_block: ProcessingBlock,
         raw_dataset: RawDataset,
         processed_dataset: ProcessedDataset,
         dataset_prefix: str | None = None,
