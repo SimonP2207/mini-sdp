@@ -1,7 +1,8 @@
 [project]
 name = "mini-sdp"
-version = "1.0.0"
+version = "0.1.0"
 description = "(Mini-)SDP for SKAO technical assessment"
+readme = "README.md"
 authors = [
     { name = "SimonP2207", email = "simonp2207@gmail.com" }
 ]
@@ -12,6 +13,7 @@ dependencies = [
 
 [project.scripts]
 mini-sdp = "mini_sdp:main"
+mini-sdp-generate = "mini_sdp.generator:main"
 
 [build-system]
 requires = ["uv_build>=0.12.9,<0.13.0"]
